@@ -19,7 +19,8 @@ import { useTaskEngine } from './hooks/useTaskEngine';
 import { TaskSidebar } from './components/TaskSidebar';
 import { PerformanceStatsDashboard } from './components/PerformanceStatsDashboard';
 import { TRACKING_START_DATE, cycleStartDate, getShiftForDate as getShiftForDateEngine } from './lib/taskEngine';
-import { CalendarHeader } from './components/CalendarHeader';
+import { CalendarHeader, type ViewMode } from './components/CalendarHeader';
+import { SnakeGame } from './components/SnakeGame';
 import { CalendarGrid } from './components/CalendarGrid';
 import { Legend } from './components/Legend';
 import { EditShiftModal } from './components/EditShiftModal';
@@ -43,7 +44,7 @@ export default function App() {
   });
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [viewMode, setViewMode] = useState<'calendar' | 'stats'>('calendar');
+  const [viewMode, setViewMode] = useState<ViewMode>('calendar');
 
   // Initialize task engine
   const { 
@@ -135,7 +136,13 @@ export default function App() {
             currentDate={currentDate}
           />
 
-        {viewMode === 'stats' ? (
+        {viewMode === 'snake' ? (
+          <div className="flex justify-center">
+            <div className="w-full max-w-2xl">
+              <SnakeGame isDarkMode={isDarkMode} />
+            </div>
+          </div>
+        ) : viewMode === 'stats' ? (
           <PerformanceStatsDashboard 
             dailyTasks={dailyTasks}
             weeklyTasks={weeklyTasks}
@@ -165,6 +172,7 @@ export default function App() {
         </div>
         
         {/* Sidebar */}
+        {viewMode !== 'snake' && (
         <TaskSidebar 
           currentDate={selectedDate || startOfDay(new Date())} 
           dailyTasks={dailyTasks}
@@ -179,6 +187,7 @@ export default function App() {
           onRemoveWeeklyTask={removeWeeklyTask}
           customShifts={customShifts}
         />
+        )}
         
       </div>
 

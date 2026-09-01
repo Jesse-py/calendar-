@@ -1,11 +1,13 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Sun, Moon, BarChart2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar as CalendarIcon, Sun, Moon, BarChart2, ChevronLeft, ChevronRight, Gamepad2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
+export type ViewMode = 'calendar' | 'stats' | 'snake';
+
 interface CalendarHeaderProps {
-  viewMode: 'calendar' | 'stats';
-  setViewMode: (mode: 'calendar' | 'stats') => void;
+  viewMode: ViewMode;
+  setViewMode: (mode: ViewMode) => void;
   isDarkMode: boolean;
   setIsDarkMode: (val: boolean) => void;
   jumpToToday: () => void;
@@ -61,6 +63,18 @@ export function CalendarHeader({
             )}
           >
             <BarChart2 className="w-4 h-4" /> <span className="hidden sm:inline">Stats</span>
+          </button>
+          <button
+            onClick={() => setViewMode('snake')}
+            aria-label="Snake"
+            className={cn(
+              "px-3 py-1.5 md:py-2 rounded flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest transition-all",
+              viewMode === 'snake'
+                ? "bg-white dark:bg-slate-700 text-emerald-700 dark:text-emerald-300 shadow-sm"
+                : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+            )}
+          >
+            <Gamepad2 className="w-4 h-4" /> <span className="hidden sm:inline">Snake</span>
           </button>
         </div>
 
